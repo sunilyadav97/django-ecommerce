@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YourCart</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    .my_cart {
+      font-size: 2.5rem;
+      position: relative;
+
+      color: #fff03f;
+    }
+
+    .c_badge {
+      position: absolute;
+      font-size: 1.1rem;
+      bottom: 16px;
+      left: 25px;
+      padding: 3px 8px 7px 10px;
+      color: white;
+      background-color: green;
+      border-radius: 50%;
+      
+    }
+    .product-image{
+      object-fit: cover;
+      aspect-ratio: 15/9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'store' %}">YourCart</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'store' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            {% if not user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#signupmodal" style="cursor:pointer ;" onclick="resetform()">Login</a>
+            </li>
+            {% else %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                {{user.first_name}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li> 
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        <div class="text-light pe-5 ">
+          <a href="{% url 'cart' %}" class="text-light me-3"><i class='bx bxs-cart fs-3 my_cart'><span
+                class="c_badge " id="cart">{{cart.cartquantity}}</span> </i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="signupmodal" tabindex="-1" aria-labelledby="signupmodalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signupmodalLabel">Signup here</h5>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'register' %}" method="post" id="form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username"
+                  placeholder="Choose Your unsername unique" autocomplete="Off">
+              </div>
+              <div class="mb-3 signup">
+                <label for="fname" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter Your First Name">
+              </div>
+              <div class="mb-3 signup">
+                <label for="lname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter Your Last Name">
+              </div>
+              <div class="mb-3 signup">
+                <label for="email" class="form-label">Email</label>
+                <input type="eamil" class="form-control" id="email" name="email" placeholder="Enter Your Email">
+              </div>
+              <div class="mb-3">
+                <label for="pass1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="pass1" name="pass1" placeholder="Choose Your Password">
+              </div>
+              <div class="mb-3 signup">
+                <label for="pass2" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="pass2" name="pass2" placeholder="Enter Password again">
+              </div>
+            <div class="mb-3 " id="btn-signup">
+              <button type="submit" class="btn btn-primary">Signup</button>
+              <span>Already have account ?</span> <button type="button" class="btn btn-success btn-sm" onclick="removesignup()">Login</button>
+            </div>
+            <div class="mb-3 d-none" id="btn-login">
+              <button type="submit" class="btn btn-primary">Login</button>
+              <span>New user ?</span> <button type="button" class="btn btn-success btn-sm" onclick="addsignup()">signup</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </header>
+{% block content %}
+
+
+
+{% endblock  %}
+
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+  crossorigin="anonymous"></script>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  function resetform() {
+    let forminputs = document.querySelectorAll(".form-control")
+    forminputs.forEach(
+      x => {
+        x.value = ''
+      }
+    )
+  }
+// Remove signup Modal
+  function removesignup(){
+    const signupItemRemove=document.querySelectorAll('.signup')
+    , username=document.getElementById('username')
+    , password=document.getElementById('pass1')
+    , btnSignup=document.getElementById('btn-signup')
+    , btnLogin=document.getElementById('btn-login')
+    , modalTitle=document.getElementById('signupmodalLabel'),
+    form=document.getElementById('form')
+
+
+    signupItemRemove.forEach(x=>{
+      x.classList.add('d-none')
+    })
+
+    username.placeholder="Enter Your username"
+    password.placeholder="Enter Your Password"
+    btnSignup.classList.add('d-none')
+    btnLogin.classList.remove('d-none')
+    modalTitle.innerHTML='Login'
+    form.action="{% url 'login' %}"
+  
+  }
+// Add Signup Modal
+  function addsignup(){
+    const signupItemAdd=document.querySelectorAll('.signup')
+    const username=document.getElementById('username')
+    const password=document.getElementById('pass1')
+    const btnSignup=document.getElementById('btn-signup')
+    const btnLogin=document.getElementById('btn-login')
+    const modalTitle=document.getElementById('signupmodalLabel')
+    ,form=document.getElementById('form')
+
+    signupItemAdd.forEach(x=>{
+      x.classList.remove('d-none')
+    })
+    username.placeholder="Choose Your username unique"
+    password.placeholder="Choose Your Password"
+    btnSignup.classList.remove('d-none')
+    btnLogin.classList.add('d-none')
+    modalTitle.innerHTML='Signup here'
+    form.action="{% url 'register' %}"
+  }
+
+  let user = "{{request.user}}"
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+
+</script>
+</body>
+
+</html>

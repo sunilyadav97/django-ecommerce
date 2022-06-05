@@ -46,7 +46,7 @@
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse d-sm-flex justify-content-between" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'store' %}">Home</a>
@@ -69,11 +69,11 @@
             </li>
             {% endif %}
           </ul>
-        </div>
-        <div class=" text-end text-light pe-5 ">
-          <a href="{% url 'cart' %}" class="text-light me-3"><i class='bx bxs-cart fs-3 my_cart'><span
-                class="c_badge " id="cart">{{cart.cartquantity}}</span> </i>
-          </a>
+          <div class="me-2">
+            <a href="{% url 'cart' %}" class="text-light"><i class='bx bxs-cart fs-3 my_cart'><span
+              class="c_badge" id="cart">{{cart.cartquantity}}</span> </i>
+            </a>
+          </div>
         </div>
       </div>
     </nav>

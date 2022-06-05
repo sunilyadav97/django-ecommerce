@@ -57,21 +57,39 @@ def addToCart(request):
     return JsonResponse(msg,safe=False)
 
 def signin(request):
+    if request.user.is_authenticated:
+        messages.error(request,'You already logged in.')
+        return redirect(store)
+
     if request.method == "POST":
         username=request.POST['username']
         pass1=request.POST['pass1']
+
+        if username == '':
+            messages.error(request,"Please Enter a Username")
+            return redirect(store)
+
+        if pass1 == '':
+            messages.error(request,"Please Enter a Password")
+            return redirect(store)
+
+        check_user=User.objects.filter(username=username).first()
+        if check_user is None:
+            messages.error(request,'Invalid username not found. Please enter a valid username.')
+            return redirect(store)
 
         user=authenticate(username=username,password=pass1)
 
         if user is not None:
             login(request,user)
-            messages.success(request,'You are logged successfully !')
+            messages.success(request,'You are logged in successfully !')
             return redirect('store')
         else:
-            messages.error(request,'Please enter valid username and password')
+            messages.error(request,'Invalid password. Please enter a valid password!')
             return redirect('store')
     else:
-        return HttpResponse(' 404 Page not found')
+        messages.error(request,'Somthing went wrong.')
+        return redirect(store) 
 
 
 def register(request):

@@ -1,16 +1,8 @@
 {% extends "./base.html" %}
 
-{% block content %}
+{% block start %}
   
 
-  {% for message in messages %}
-
-  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-    <strong>Messages : </strong> {{message}}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">&times;</button>
-  </div>
-
-  {% endfor %}
 
   <section >
     <div class="container pt-5">
@@ -21,7 +13,7 @@
             <img src="{{product.image.url}}" class="card-img-top product-image" alt="...">
             <div class="card-body">
               <h5 class="card-title">{{product.name}}</h5>
-              <p class="card-text">₹ {{ product.price }}
+              <p class="card-text">₹ {{product.price}}
               <p>
                 <a href="#" class="btn btn-primary add-to-cart" data-product="{{product.product_id}}"   data-action="add">Add to
                   cart</a>
@@ -34,4 +26,4 @@
   </section>
 
   
-{% endblock content %}
+{% endblock %}

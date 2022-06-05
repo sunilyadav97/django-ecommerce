@@ -8,45 +8,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YourCart</title>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+  <!-- Bootstrap css CDN Link -->
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+  <!-- custom css Link -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- web icons CDN link -->
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-  <style>
-    .my_cart {
-      font-size: 2.5rem;
-      position: relative;
 
-      color: #fff03f;
-    }
 
-    .c_badge {
-      position: absolute;
-      font-size: 1.1rem;
-      bottom: 16px;
-      left: 25px;
-      padding: 3px 8px 7px 10px;
-      color: white;
-      background-color: green;
-      border-radius: 50%;
-      
-    }
-    .product-image{
-      object-fit: cover;
-      aspect-ratio: 15/9;
-    }
-  </style>
+  <!-- Custom Script Link -->
+  <script src="{% static 'js/main.js' %}"></script>
+  
 </head>
 
 <body>
 
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
+      <div class="container">
         <a class="navbar-brand" href="{% url 'store' %}">YourCart</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse d-sm-flex justify-content-between" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'store' %}">Home</a>
@@ -117,11 +106,11 @@
               </div>
             <div class="mb-3 " id="btn-signup">
               <button type="submit" class="btn btn-primary">Signup</button>
-              <span>Already have account ?</span> <button type="button" class="btn btn-success btn-sm" onclick="removesignup()">Login</button>
+              <span>Already have account ?</span> <button type="reset" class="btn btn-success btn-sm" onclick="removesignup()">Login</button>
             </div>
             <div class="mb-3 d-none" id="btn-login">
               <button type="submit" class="btn btn-primary">Login</button>
-              <span>New user ?</span> <button type="button" class="btn btn-success btn-sm" onclick="addsignup()">signup</button>
+              <span>New user ?</span> <button type="reset" class="btn btn-success btn-sm" onclick="addsignup()">signup</button>
             </div>
             </form>
           </div>
@@ -130,22 +119,37 @@
     </div>
 
   </header>
-{% block content %}
+
+  <!-- Djnago Messages framework -->
+
+  {% for message in messages %}
+
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show  mt-2 m-auto w-75 "  role="alert">
+    <strong>Messages : </strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  {% endfor %}
+
+{% block start %}
 
 
 
 {% endblock  %}
 
+<!-- Footer start-->
 
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-  crossorigin="anonymous"></script>
+  <footer class="py-2 bg-dark text-light align-items-center mt-5">
+    <p class="text-center ">© 2022 yourcart, all right reserved</p>
+  </footer>
+<!-- Footer End -->
 
-<script src="{% static 'js/main.js' %}"></script>
+<!-- Bootstrap CDN Script -->
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script>
   function resetform() {
+    console.log('this is working login reset')
     let forminputs = document.querySelectorAll(".form-control")
     forminputs.forEach(
       x => {
@@ -215,8 +219,6 @@
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-
-
 </script>
 </body>
 

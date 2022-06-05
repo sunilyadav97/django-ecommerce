@@ -1,0 +1,22 @@
+.my_cart {
+    font-size: 2.5rem;
+    position: relative;
+
+    color: #fff03f;
+  }
+
+  .c_badge {
+    position: absolute;
+    font-size: 1.1rem;
+    bottom: 10px;
+    left: 20px;
+    padding: 3px 8px 7px 10px;
+    color: white;
+    background-color: green;
+    border-radius: 50%;
+    
+  }
+  .product-image{
+    object-fit: cover;
+    aspect-ratio: 18/9;
+  }

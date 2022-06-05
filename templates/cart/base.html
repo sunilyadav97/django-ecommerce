@@ -51,9 +51,7 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'store' %}">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
+            
             {% if not user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -66,14 +64,13 @@
                 {{user.first_name}}
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li> 
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               </ul>
             </li>
             {% endif %}
           </ul>
         </div>
-        <div class="text-light pe-5 ">
+        <div class=" text-end text-light pe-5 ">
           <a href="{% url 'cart' %}" class="text-light me-3"><i class='bx bxs-cart fs-3 my_cart'><span
                 class="c_badge " id="cart">{{cart.cartquantity}}</span> </i>
           </a>

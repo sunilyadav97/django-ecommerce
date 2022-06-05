@@ -99,5 +99,3 @@ def signout(request):
     messages.success(request,'You are logged out successfully!')
     return redirect('store')
 
-def profile(request):
-    return render(request,'cart/profile.html')

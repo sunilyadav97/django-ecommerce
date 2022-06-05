@@ -20,7 +20,7 @@ def store(request):
     products=Prodcut.objects.all()
     context={'products':products,'cart':cart,'cartitems':cartitems}
 
-    return render(request,'cart/index.html',context)
+    return render(request,'cart/home.html',context)
 
 def cart(request):
     if request.user.is_authenticated:
@@ -75,24 +75,51 @@ def signin(request):
 
 
 def register(request):
-    if request.method == 'POST':
-        username=request.POST['username']
-        fname=request.POST['fname']
-        lname=request.POST['lname']
-        email=request.POST['email']
-        pass1=request.POST['pass1']
-        pass2=request.POST['pass2']
+    try:
+        if request.method == 'POST':
+            username=request.POST['username']
+            fname=request.POST['fname']
+            lname=request.POST['lname']
+            email=request.POST['email']
+            pass1=request.POST['pass1']
+            pass2=request.POST['pass2']
 
-        myuser=User.objects.create_user(username,email,pass1)
-        myuser.first_name=fname
-        myuser.last_name=lname
-        myuser.save()
+            if username == '':
+                messages.error(request,'Username is must.')
+                return redirect(store)
 
-        messages.success(request,"Your Account has been created successfully!")
+            if fname == '':
+                messages.error(request,'First Name is Mandatory')
+                return redirect(store)
 
-        return redirect('store')
-    else:
-        return HttpResponse(' 404 Page not found ')
+            if lname == '':
+                messages.error(request,'Last Name is Mandatory')
+                return redirect(store)
+
+            if email == '':
+                messages.error(request,'Email is compalsary.')
+                return redirect(store)
+
+            if pass1 != pass2:
+                messages.error(request,'Both password should be match')
+                return redirect(store)
+                
+            user_obj=User.objects.filter(username=username)
+            if user_obj:
+                messages.error(request,'Username is already Exit!')
+                return redirect(store)
+                
+            myuser=User.objects.create_user(username,email,pass1)
+            myuser.first_name=fname
+            myuser.last_name=lname
+            myuser.save()
+
+            messages.success(request,"Your Account has been created successfully!")
+
+            return redirect('store')
+    except Exception as e:
+        print(e)
+    return HttpResponse(' 404 Page not found ')
 
 def signout(request):
     logout(request)
